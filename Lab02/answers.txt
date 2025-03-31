@@ -1,0 +1,21 @@
+10.Question: If you create a constructor method to build a DVD by title then create a constructor method to build a DVD by category. Does JAVA allow you to do this?  
+
+
+
+Java cho phép tạo nhiều constructor khác nhau trong một lớp miễn là chúng có chữ ký (signature) khác nhau. Điều này có nghĩa là các constructor phải khác nhau về số lượng hoặc kiểu dữ liệu của tham số truyền vào.
+
+Ví dụ, nếu có một constructor nhận vào tham số là title và một constructor khác nhận vào category, Java vẫn phân biệt được chúng nhờ kiểu tham số khác nhau. Đây chính là cơ chế nạp chồng constructor (constructor overloading) trong Java.
+
+Nhờ tính năng này, có thể tạo nhiều cách khác nhau để khởi tạo một đối tượng, giúp linh hoạt hơn trong quá trình lập trình.
+
+
+
+15.Question: Is JAVA a Pass by Value or a Pass by Reference programming language?
+
+Java là một ngôn ngữ Pass by Value.
+
+Khi chúng ta truyền các kiểu dữ liệu nguyên thủy (như int, float, double,...) vào một phương thức, Java sẽ tạo một bản sao của giá trị và truyền nó vào phương thức. Do đó, thay đổi giá trị trong phương thức sẽ không ảnh hưởng đến giá trị ban đầu của biến ngoài phương thức.
+
+Còn khi làm việc với các đối tượng, Java truyền giá trị của tham chiếu (tức là địa chỉ bộ nhớ nơi đối tượng được lưu trữ) vào phương thức. Điều này có nghĩa là nếu chúng ta thay đổi thuộc tính của đối tượng trong phương thức, thì đối tượng ngoài phương thức cũng bị thay đổi. Tuy nhiên, nếu chúng ta gán đối tượng mới cho tham chiếu trong phương thức, thì việc thay đổi này chỉ ảnh hưởng trong phạm vi của phương thức và không làm thay đổi tham chiếu ngoài phương thức.
+
+Vậy, mặc dù có vẻ như Java là Pass by Reference khi làm việc với đối tượng, nhưng thực tế nó vẫn là Pass by Value vì giá trị tham chiếu (chứ không phải tham chiếu thực sự) được truyền vào phương thức.
