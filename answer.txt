@@ -1,0 +1,75 @@
+
+----------Bài tập đọc----------------
+1.Ưu điểm của Đa hình là gì?
+Đa hình (Polymorphism) trong Java mang lại các ưu điểm sau:
+Tính linh hoạt: Cho phép một đối tượng có thể được xử lý theo nhiều cách khác nhau tùy thuộc vào kiểu của nó tại thời điểm chạy (runtime).
+Tái sử dụng mã: Một phương thức có thể được sử dụng cho nhiều loại đối tượng khác nhau mà không cần viết lại mã.
+Dễ bảo trì: Giảm sự phụ thuộc giữa các lớp, giúp mã dễ mở rộng và sửa đổi.
+Tính trừu tượng: Cho phép làm việc với các đối tượng ở mức độ tổng quát, ẩn đi chi tiết triển khai cụ thể.
+2.Kế thừa hữu ích như thế nào để đạt được Đa hình trong Java?
+Kế thừa (Inheritance) là cơ chế quan trọng để đạt được Đa hình trong Java vì:
+Tạo mối quan hệ cha-con: Một lớp con kế thừa từ lớp cha có thể ghi đè (override) các phương thức của lớp cha, cho phép thực thi đa hình tại thời điểm chạy (runtime polymorphism).
+Hỗ trợ Đa hình thời gian chạy: Thông qua việc sử dụng tham chiếu của lớp cha để tham chiếu đến đối tượng của lớp con, Java có thể gọi phương thức được ghi đè của lớp con (method overriding).
+Tổ chức mã tốt hơn: Kế thừa giúp định nghĩa các phương thức chung trong lớp cha, sau đó các lớp con có thể tùy chỉnh hành vi thông qua ghi đè.
+Ví dụ: Nếu lớp Animal có phương thức makeSound(), các lớp con như Dog và Cat có thể ghi đè phương thức này để tạo ra âm thanh riêng, và một tham chiếu Animal có thể gọi đúng phương thức của đối tượng cụ thể tại thời điểm chạy.
+3.Sự khác biệt giữa Đa hình và Kế thừa trong Java là gì?
+Định nghĩa:
+Kế thừa: Là cơ chế cho phép một lớp (lớp con) kế thừa các thuộc tính và phương thức của một lớp khác (lớp cha). Nó thiết lập mối quan hệ "is-a" (là một).
+Đa hình: Là khả năng một đối tượng có thể được xử lý như một thể hiện của lớp cha hoặc giao diện, nhưng vẫn thực thi hành vi cụ thể của lớp con hoặc lớp triển khai.
+Mục đích:
+Kế thừa nhằm tái sử dụng mã và thiết lập cấu trúc phân cấp giữa các lớp.
+Đa hình nhằm tăng tính linh hoạt và cho phép một phương thức hoạt động khác nhau tùy thuộc vào đối tượng thực tế.
+Quan hệ:
+Kế thừa là một cách để đạt được Đa hình (đặc biệt là đa hình thời gian chạy thông qua ghi đè phương thức).
+Đa hình có thể được thực hiện mà không cần kế thừa, ví dụ, thông qua giao diện (interface) hoặc đa hình thời gian biên dịch (compile-time polymorphism) như nạp chồng phương thức (method overloading).
+--------------17-----------------------
+
+1. Lớp nào nên implement giao diện Comparable?
+Lớp nên implement Comparable<T> là lớp đại diện cho đối tượng cần sắp xếp tự nhiên, cụ thể trong bài toán này là lớp Media, hoặc các lớp con cụ thể như Book, DVD, CD nếu mỗi loại có quy tắc so sánh riêng.
+→ Nếu có một thứ tự mặc định áp dụng chung cho tất cả các loại media, thì implement trong lớp Media là hợp lý.
+
+2. Trong các lớp đó, phương thức compareTo() nên được implement thế nào để phản ánh quy tắc sắp xếp mong muốn?
+Bạn sẽ override phương thức compareTo() sao cho thể hiện thứ tự mặc định của đối tượng. Ví dụ:
+
+@Override
+public int compareTo(Media other) {
+    int titleComparison = this.getTitle().compareToIgnoreCase(other.getTitle());
+    if (titleComparison != 0) return titleComparison;
+
+    // Nếu tiêu đề giống nhau, so sánh theo giá
+    return Float.compare(this.getCost(), other.getCost());
+}
+→ Như vậy, đối tượng Media sẽ được sắp xếp tăng dần theo tiêu đề, sau đó theo giá.
+
+ 3. Có thể có hai quy tắc sắp xếp khác nhau (ví dụ: theo tiêu đề rồi giá, hoặc theo giá rồi tiêu đề) khi dùng Comparable không?
+Không. Giao diện Comparable chỉ cho phép định nghĩa một quy tắc sắp xếp mặc định duy nhất qua phương thức compareTo().
+
+=> Nếu muốn dùng nhiều cách sắp xếp khác nhau, bạn nên dùng lớp Comparator để truyền quy tắc sắp xếp khác vào phương thức Collections.sort() hoặc list.sort().
+
+Ví dụ:
+
+Comparator<Media> compareByCostThenTitle = Comparator
+    .comparing(Media::getCost)
+    .thenComparing(Media::getTitle);
+
+Collections.sort(mediaList, compareByCostThenTitle);
+4. Giả sử DVD có quy tắc sắp xếp khác (theo tiêu đề, sau đó là độ dài giảm dần, rồi giá), làm thế nào để chỉnh sửa code để hỗ trợ điều này?
+Bạn có thể override phương thức compareTo() riêng cho lớp DigitalVideoDisc (DVD) như sau:
+
+@Override
+public int compareTo(Media other) {
+    if (other instanceof DigitalVideoDisc dvd) {
+        int titleComparison = this.getTitle().compareToIgnoreCase(dvd.getTitle());
+        if (titleComparison != 0) return titleComparison;
+
+        // So sánh độ dài giảm dần
+        int lengthComparison = Integer.compare(dvd.getLength(), this.getLength());
+        if (lengthComparison != 0) return lengthComparison;
+
+        return Float.compare(this.getCost(), dvd.getCost());
+    } else {
+        // fallback nếu so sánh với loại Media khác
+        return super.compareTo(other);
+    }
+}
+=> Như vậy bạn vẫn giữ quy tắc mặc định trong Media, nhưng DVD lại có logic riêng phù hợp với yêu cầu.
