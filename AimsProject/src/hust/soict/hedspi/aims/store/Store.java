@@ -1,13 +1,10 @@
 package hust.soict.hedspi.aims.store;
 
 import java.util.ArrayList;
-
 import hust.soict.hedspi.aims.cart.Cart;
-import hust.soict.hedspi.aims.media.Media;
-import hust.soict.hedspi.aims.media.Playable;
+import hust.soict.hedspi.aims.media.*;
 
 public class Store {
-    // Dùng ArrayList thay vì mảng tĩnh
     private ArrayList<Media> itemsInStore = new ArrayList<>();
 
     // Thêm media vào cửa hàng
@@ -18,6 +15,24 @@ public class Store {
         } else {
             System.out.println("Media \"" + media.getTitle() + "\" is already in the store.");
         }
+    }
+
+    // Thêm sách vào cửa hàng
+    public void addBook(int id, String title, String category, float cost, ArrayList<String> authors) {
+        Book book = new Book(id, title, category, cost, authors);
+        addMedia(book);
+    }
+
+    // Thêm đĩa CD vào cửa hàng
+    public void addCompactDisc(int id, String title, String category, float cost, String director, String artist, int length) {
+        CompactDisc cd = new CompactDisc(id, title, category, cost, director, artist, length);
+        addMedia(cd);
+    }
+
+    // Thêm đĩa DVD vào cửa hàng
+    public void addDigitalVideoDisc(String title, String category, String director, int length, float cost) {
+        DigitalVideoDisc dvd = new DigitalVideoDisc(title, category, director, length, cost);
+        addMedia(dvd);
     }
 
     // Xoá media khỏi cửa hàng
@@ -37,7 +52,7 @@ public class Store {
         }
     }
 
-    // Hiển thị danh sách media trong cửa hàng
+    // Hiển thị thông tin chi tiết của media
     public void displayMediaDetails(String title) {
         for (Media media : itemsInStore) {
             if (media.getTitle().equalsIgnoreCase(title)) {
@@ -47,6 +62,8 @@ public class Store {
         }
         System.out.println("Media not found in store.");
     }
+
+    // Thêm media vào giỏ hàng
     public void addToCart(String title, Cart cart) {
         for (Media media : itemsInStore) {
             if (media.getTitle().equalsIgnoreCase(title)) {
@@ -56,6 +73,8 @@ public class Store {
         }
         System.out.println("Media not found in store.");
     }
+
+    // Phát media nếu có thể
     public void playMedia(String title) {
         for (Media media : itemsInStore) {
             if (media.getTitle().equalsIgnoreCase(title) && media instanceof Playable) {
@@ -66,9 +85,7 @@ public class Store {
         System.out.println("Playable media not found with title: " + title);
     }
 
-
-
-    // Getter để truy xuất danh sách nếu cần
+    // Getter để truy xuất danh sách media trong cửa hàng
     public ArrayList<Media> getItemsInStore() {
         return itemsInStore;
     }
